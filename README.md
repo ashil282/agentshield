@@ -1,0 +1,83 @@
+# AgentShield
+
+**A local-first AI agent security testing and runtime policy simulation platform.**
+
+AgentShield is a reproducible laboratory for synthetic prompt-injection, simulated tool permissions, synthetic data-exfiltration attempts, policy decisions, and evidence-backed test reports. It targets CPU-only Ubuntu laptops and does not require a model, GPU, cloud account, or paid API.
+
+> **Boundary:** v1 is a deterministic simulator and heuristic harness. It does not attach to arbitrary live agents, sandbox hostile code, prove model safety, or prevent attacks outside its simulation. Findings are signals for human review.
+
+## Features
+- 12 bundled synthetic scenarios: direct/indirect injection, tool abuse, exfiltration, policy gates, evasion markers and benign controls.
+- Deterministic agent simulator; never runs shell commands, writes arbitrary files or makes network requests.
+- Allow/deny/approval policy engine with protected-data markers.
+- Heuristic detector with rule IDs, severity and evidence excerpts.
+- Expected-versus-observed outcomes, bounded risk scoring, semantic replay and SQLite run history.
+- Synthetic catalog benchmark: `python benchmarks/run_benchmark.py`.
+- CLI suite execution, JSON/HTML reports, FastAPI API and React + TypeScript dashboard.
+- Pytest suite and GitHub Actions CI.
+
+## Requirements
+Ubuntu 22.04/24.04, Python 3.10+, Node.js 18+ and npm for the dashboard. 8 GB RAM is sufficient. No GPU required.
+
+## Install
+```bash
+git clone https://github.com/ashil282/agentshield.git
+cd agentshield
+chmod +x scripts/setup_ubuntu.sh
+./scripts/setup_ubuntu.sh
+source .venv/bin/activate
+pytest
+agentshield list
+agentshield suite
+```
+Manual backend-only install:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+python -m pip install -e '.[dev]'
+```
+
+## Start API and UI
+Terminal 1:
+```bash
+source .venv/bin/activate
+uvicorn agentshield.api:app --app-dir backend --reload
+```
+Terminal 2:
+```bash
+cd frontend
+npm install
+npm run dev
+```
+Open http://127.0.0.1:5173. API docs: http://127.0.0.1:8000/docs.
+
+## CLI
+```bash
+agentshield list
+agentshield run direct-ignore --report reports/direct-ignore.html
+agentshield suite --report-dir reports
+```
+Exit 0 means expected outcome matched; exit 2 means mismatch.
+
+## API
+- `GET /health`
+- `GET /api/v1/scenarios`
+- `POST /api/v1/runs` body `{"scenario_id":"direct-ignore"}`
+- `GET /api/v1/runs?limit=50`
+- `GET /api/v1/runs/{run_id}`
+
+The API has no authentication. Keep it bound to loopback; do not expose it to an untrusted network.
+
+## Security notes
+- Scenario text is inert data, never evaluated as code.
+- Proposed tool actions are data structures only.
+- Policy enforcement applies only to simulated actions, not third-party agents.
+- Regex heuristics have false positives and false negatives; semantic and encoded attacks are not comprehensively detected.
+- Scores are prioritization hints, not calibrated probabilities.
+- Do not use production secrets or personal data in demo scenarios.
+- Authentication, multi-user authorization, rate limiting and hardened deployment are not included in v1.
+
+Replay compares semantic fingerprints rather than volatile timestamps or run IDs. The benchmark is descriptive over this synthetic catalog, not a claim of real-world accuracy.
+
+See `docs/ARCHITECTURE.md`, `docs/SAFE_TESTING.md`, `docs/ROADMAP.md`, `CONTRIBUTING.md`, `SECURITY.md`. MIT license.
