@@ -1,4 +1,6 @@
 from .models import AgentAction
+
+
 class SimulatedAgent:
     """Deterministic simulator. Never executes processes, writes files, or accesses networks."""
     def propose(self, scenario):

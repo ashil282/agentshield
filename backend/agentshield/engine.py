@@ -1,10 +1,12 @@
 from datetime import datetime, timezone
 from uuid import uuid4
-from .models import RunResult, Severity
-from .detection import inspect_text, inspect_action
-from .simulator import SimulatedAgent
+
+from .detection import inspect_action, inspect_text
+from .models import RunResult
 from .policies import PolicyEngine
 from .scoring import calculate_risk
+from .simulator import SimulatedAgent
+
 
 class SecurityEngine:
     def __init__(self, policy=None, agent=None):

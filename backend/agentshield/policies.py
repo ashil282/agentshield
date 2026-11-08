@@ -1,5 +1,7 @@
 from dataclasses import dataclass, field
+
 from .models import AgentAction, Decision
+
 
 @dataclass
 class Policy:

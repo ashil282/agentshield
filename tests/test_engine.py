@@ -1,5 +1,7 @@
 from agentshield.engine import SecurityEngine
 from agentshield.scenarios import load_scenarios
+
+
 def test_catalog_size(): assert len(load_scenarios()) >= 10
 def test_every_catalog_case_completes():
     results=[SecurityEngine().run(s) for s in load_scenarios()]

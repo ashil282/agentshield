@@ -2,6 +2,7 @@ from agentshield.engine import SecurityEngine
 from agentshield.replay import ReplayEngine
 from agentshield.scenarios import load_scenarios
 
+
 def test_replay_is_semantically_deterministic():
     scenario = load_scenarios()[0]
     engine = SecurityEngine()

@@ -1,5 +1,6 @@
-from agentshield.scoring import calculate_risk
 from agentshield.models import Finding, Severity
+from agentshield.scoring import calculate_risk
+
 
 def test_risk_score_is_bounded():
     findings = [Finding(rule_id=str(i), title="x", severity=Severity.critical,

@@ -1,6 +1,8 @@
 from dataclasses import dataclass
+
 from .engine import SecurityEngine
 from .models import RunResult, Scenario
+
 
 @dataclass(frozen=True)
 class ReplayComparison:

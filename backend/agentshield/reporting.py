@@ -1,4 +1,6 @@
 from pathlib import Path
+
+
 def esc(v):
     return str(v).replace("&","&amp;").replace("<","&lt;").replace(">","&gt;").replace('"',"&quot;").replace("'","&#x27;")
 def to_json(result):

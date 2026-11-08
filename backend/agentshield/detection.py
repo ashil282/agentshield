@@ -1,5 +1,6 @@
 import re
-from .models import AgentAction, Finding, Severity
+
+from .models import Finding, Severity
 
 RULES = [
  ("INJ-001","Instruction override attempt",Severity.high,r"ignore\s+(all\s+)?(previous|prior|above)\s+instructions"),
@@ -12,7 +13,7 @@ RULES = [
 def inspect_text(text):
     findings=[]
     for rid,title,sev,pattern in RULES:
-        m=re.search(pattern,text,re.I)
+        m=re.search(pattern,text,re.IGNORECASE)
         if m:
             evidence=text[max(0,m.start()-45):min(len(text),m.end()+65)]
             findings.append(Finding(rule_id=rid,title=title,severity=sev,

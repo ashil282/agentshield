@@ -1,7 +1,9 @@
 from agentshield.engine import SecurityEngine
+from agentshield.reporting import to_html, to_json
 from agentshield.scenarios import load_scenarios
 from agentshield.storage import RunStore
-from agentshield.reporting import to_html,to_json
+
+
 def test_sqlite_roundtrip(tmp_path):
     r=SecurityEngine().run(load_scenarios()[0]); db=RunStore(tmp_path/"runs.db"); db.save(r)
     assert db.get(r.run_id)["scenario_id"]==r.scenario_id and len(db.list())==1

@@ -1,6 +1,8 @@
 import json
 from pathlib import Path
+
 from .models import Scenario
+
 CATALOG=Path(__file__).resolve().parents[2]/"scenarios"/"catalog.json"
 def load_scenarios(path=None):
     return [Scenario.model_validate(x) for x in json.loads(Path(path or CATALOG).read_text())]

@@ -1,8 +1,11 @@
-from fastapi import FastAPI, HTTPException, Query
 import os
+
+from fastapi import FastAPI, HTTPException, Query
+
 from .engine import SecurityEngine
-from .scenarios import load_scenarios,get_scenario
+from .scenarios import get_scenario, load_scenarios
 from .storage import RunStore
+
 app=FastAPI(title="AgentShield API",version="1.0.0",description="Local-first agent security simulation API")
 engine=SecurityEngine()
 store=RunStore(os.getenv("AGENTSHIELD_DB","agentshield.db"))
